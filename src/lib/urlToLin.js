@@ -3,8 +3,12 @@ Params:
   String (url from BBO)
   Number n (number of board, from 1 and above)
 */
-function urlToLin (string, n) {
+function urlToLin (string, n = 1) {
+  if (string === '') return '';
+
   const groups = matchGroups(string);
+  if (groups === '') return '';
+
   return buildLin(groups, n);
 }
 
@@ -15,10 +19,14 @@ Returns:
   Obj { playerNames(string), hands(string), biddingAndPlay(string) }
 */
 function matchGroups (string) {
-  return string
-           .replaceAll('%20', ' ')
-           .match(/(http.*lin=st)\|\|pn\|(?<playerNames>.*)\|md\|[1-4](?<hands>[2-9AKQJTSHDC]{17},[2-9AKQJTSHDC]{17},[2-9AKQJTSHDC]{17},[2-9AKQJTSHDC]{17}).*Board [0-9]\|*(?<biddingAndPlay>.*)/)
-           .groups;
+  const match =
+    string
+      .replaceAll('%20', ' ')
+      .match(/(http.*lin=st)\|\|pn\|(?<playerNames>.*)\|md\|[1-4](?<hands>[2-9AKQJTSHDC]{17},[2-9AKQJTSHDC]{17},[2-9AKQJTSHDC]{17},[2-9AKQJTSHDC]{17}).*Board [0-9]\|*(?<biddingAndPlay>.*)/)
+
+  if (!match) return '';
+
+  return match.groups;
 }
 
 /*
