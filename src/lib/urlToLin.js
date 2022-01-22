@@ -3,7 +3,7 @@ Params:
   String (url from BBO)
   Number n (number of board, from 1 and above)
 */
-function urlToLin (string, n = 1) {
+export default function urlToLin (string, n = 1) {
   if (string === '') return '';
 
   const groups = matchGroups(string);
@@ -22,6 +22,7 @@ function matchGroups (string) {
   const match =
     string
       .replaceAll('%20', ' ')
+      .replaceAll('%7C', '|')
       .match(/(http.*lin=st)\|\|pn\|(?<playerNames>.*)\|md\|[1-4](?<hands>[2-9AKQJTSHDC]{17},[2-9AKQJTSHDC]{17},[2-9AKQJTSHDC]{17},[2-9AKQJTSHDC]{17}).*Board [0-9]\|*(?<biddingAndPlay>.*)/)
 
   if (!match) return '';
@@ -70,5 +71,3 @@ function vulByIndex (index) {
     default: return vulByIndex(index % 16);
   }
 }
-
-export default urlToLin;
